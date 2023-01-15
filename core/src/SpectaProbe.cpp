@@ -192,13 +192,13 @@ void SpectaProbe::start()
 			prevMin = currentMin;
 		}
 
-		if(currentHour != prevHour)
-		{
-			/* Do any Hour wise work */
-			writeUniqueIP();
-
-			prevHour = currentHour;
-		}
+//		if(currentHour != prevHour)
+//		{
+//			/* Do any Hour wise work */
+//			writeUniqueIP();
+//
+//			prevHour = currentHour;
+//		}
 
 		today = IPGlobal::CURRENT_DAY;
 		if(lastday != today)
