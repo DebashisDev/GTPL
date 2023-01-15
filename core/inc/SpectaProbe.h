@@ -62,7 +62,7 @@ class SpectaProbe : public BaseConfig
 		pthread_t 			psLogThread;
 
 		ProbeStats 			*ps;
-		pthread_t 			psThread ;
+		pthread_t 			psThread;
 
 		ofstream	 		rIpHandler;
 
