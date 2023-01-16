@@ -191,7 +191,15 @@ void UDPParser::decordFlowId(const BYTE packet, uint16_t* noOfFlows, uint8_t ver
 	t_array[0]->noOfFlows = valueLoop;
 	t_array[0]->locationId = locationId;
 
-	pushToXdrAgent(t_array);
+	switch(t_array[0]->ipVersion)
+	{
+		case IPVersion4:
+					pushToXdrAgentV4(t_array);
+					break;
+
+		case IPVersion6:
+					break;
+	}
 }
 
 //void UDPParser::display(cFlow** t_array)
@@ -294,7 +302,7 @@ uint16_t UDPParser::extractValues(const BYTE packet, uint8_t version, uint16_t *
 	return offset;
 }
 
-void UDPParser::pushToXdrAgent(cFlow** t_array)
+void UDPParser::pushToXdrAgentV4(cFlow** t_array)
 {
 	uint16_t idx = PKT_WRITE_TIME_INDEX(IPGlobal::CURRENT_EPOCH_SEC, IPGlobal::TIME_INDEX);
 

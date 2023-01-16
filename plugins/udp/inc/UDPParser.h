@@ -65,7 +65,7 @@ class UDPParser : public DnsData
 
 		uint32_t 	HextoDigits(char *hexadecimal);
 
-		void		pushToXdrAgent(cFlow** t_array);
+		void		pushToXdrAgentV4(cFlow** t_array);
 		void 		copyMsgObj(uint32_t &cnt, std::unordered_map<uint32_t, cFlow> &msg, cFlow *msgObj);
 
 		void		pushToFortiGWAgent(string xdr);
