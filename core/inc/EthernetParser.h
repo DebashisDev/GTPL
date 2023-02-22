@@ -31,6 +31,8 @@ class EthernetParser : public BaseConfig
 	private:
 		UDPParser		*udp;
 		TCPParser		*tcp;
+		dnsHdrIp		*dnsHdrIpInfo;
+
 
 		int interfaceId = 0;
 		int routerId = 0;
@@ -41,6 +43,8 @@ class EthernetParser : public BaseConfig
 		void		parseIPV4Packet(const BYTE packet, headerInfo *hdrObj);
 		uint16_t	extractIpv4Address(const BYTE packet);
 		void    	hexDump(const void* pv, int len);
+
+		void 		extractDnsIpv4Address(const BYTE packet, dnsHdrIp *info);
 
 	public:
 		EthernetParser(uint16_t intfid, uint16_t rId);

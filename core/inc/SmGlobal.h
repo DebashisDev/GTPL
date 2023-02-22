@@ -722,6 +722,7 @@ namespace DNSGlobal
 {
 	extern std::map<uint32_t, std::string> dnsLookUpMap[10];
 	extern std::map<std::string, std::string> dnsV6LookUpMap;
+	extern std::map<uint32_t, uint32_t> dnsSubnetMap;
 }
 
 typedef struct _userInfo

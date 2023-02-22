@@ -144,21 +144,42 @@ void SpectaProbe::start()
 
 	printf("  *** [%02d] Packet Processing Paused. \n", 2);
 	TheLog_nc_v1(Log::Info, name(),"  *** [%02d] Packet Processing Paused. ", 2);
-	packetProcessing(false);			/* ---- Pause the incoming Traffic ---- */
+	packetProcessing(false);				/* ---- Pause the incoming Traffic ---- */
 
-	spawnRoutersPerInterface(3);		/* ---- Start Router / Interface Threads ---- */
+	spawnRoutersPerInterface(3);			/* ---- Start Router / Interface Threads ---- */
 
-	spawncFlowSM(4);					/* ---- Start cFlow SM Threads ---- */
+	if(IPGlobal::PROCESS_CFLOW)
+		spawncFlowSM(4);					/* ---- Start cFlow SM Threads ---- */
 
-	spawnFortiSM(5);					/* ---- Start Forti SM Threads ---- */
+	if(IPGlobal::PROCESS_FORTI)
+		spawnFortiSM(5);					/* ---- Start Forti SM Threads ---- */
 
-	spawnFlusher(6);					/* ---- Start Flusher Threads ---- */
+	if(IPGlobal::PROCESS_CFLOW)
+		spawnFlusher(6);					/* ---- Start Flusher Threads ---- */
 
-	initializeNICs(7);					/* ---- Start NIC Listener Threads ---- */
+	initializeNICs(7);						/* ---- Start NIC Listener Threads ---- */
 
-	printStats(8);						/* ---- Start Probe Log Threads ---- */
+	printStats(8);							/* ---- Start Probe Log Threads ---- */
 
-	writeStats(9);						/* ---- Start Probe Statistic Threads ---- */
+	writeStats(9);							/* ---- Start Probe Statistic Threads ---- */
+
+	switch(IPGlobal::DNS_ID)
+	 {
+	 	case 111:	IPGlobal::DNS_IP = IPGlobal::AHM_DNS;
+	 				break;
+	 	case 112:	IPGlobal::DNS_IP = IPGlobal::BRO_DNS;
+	 				break;
+	 	case 113:	IPGlobal::DNS_IP = IPGlobal::RAJ_DNS;
+	 				break;
+	 	case 114:	IPGlobal::DNS_IP = IPGlobal::SUR_DNS;
+	 				break;
+	 	case 115:	IPGlobal::DNS_IP = IPGlobal::PAT_DNS;
+	 				break;
+	 	case 116:	IPGlobal::DNS_IP = IPGlobal::HYD_DNS;
+	 				break;
+	 	default:
+	 		break;
+	 }
 
 	sleep(4);							/* ---- Start Processing the data after 10 seconds ---- */
 
@@ -187,8 +208,12 @@ void SpectaProbe::start()
 
 		if(currentMin != prevMin)
 		{
-			if(IPGlobal::PROCESS_DNS) dnsDumpIpv4Data(IPGlobal::XDR_DIR);
-//			dnsDumpIpv4Data("/opt/pinnacle/SpectaProbe/");
+			if(IPGlobal::PROCESS_DNS) 
+			{ 
+				dnsDumpIpv4Data(IPGlobal::XDR_DIR);
+				dnsSubnetDumpData(IPGlobal::CURRENT_MIN, IPGlobal::CURRENT_HOUR, IPGlobal::CURRENT_DAY, IPGlobal::CURRENT_MONTH, IPGlobal::CURRENT_YEAR);
+			}
+
 			prevMin = currentMin;
 		}
 
@@ -643,5 +668,65 @@ void SpectaProbe::dnsDumpIpv6Data(string dir)
 		printf("SpectaProbe Dumping Daily IPv6 DNS Lookup Store to file [%s]...Completed\n", filePath.c_str());
 		TheLog_nc_v1(Log::Info, name()," SpectaProbe Daily IPv6 DNS Lookup Store to file [%s]...Completed", filePath.c_str());
 		filePath.clear();
+	}
+}
+
+void SpectaProbe::dnsSubnetDumpData(uint16_t min, uint16_t hour, uint16_t day, uint16_t month, uint16_t year)
+{
+	char dnsFileName[50], dnsFinalFileName[50];
+	dnsFileName[0] = 0;
+	dnsFinalFileName[0] = 0;
+
+	uint32_t dnsRecordCount = 0;
+	char userIp[20], dnsIp[20], uIp[20];
+
+	sprintf(dnsFileName, "%s/%s_%d-%02d-%02d-%02d-%02d.csv.in",
+							IPGlobal::DNS_DIR.c_str(),
+							"dnsSubnetData",
+							year,
+							month,
+							day,
+							hour,
+							min);
+
+	string dnsFilePath = string(dnsFileName);
+
+	outFile.open(dnsFileName, ios :: out | ios :: app);
+
+	if(outFile.fail())
+	{
+		printf(" Error in Dumping Daily IPv4 DNS Lookup Store File : %s\n", dnsFileName);
+		TheLog_nc_v1(Log::Info, name()," Error in dumping Ipv4 DNS data to file [%s]", dnsFileName);
+	}
+
+	else
+	{
+		for(auto elem : DNSGlobal::dnsSubnetMap)
+		{
+			dnsRecordCount++;
+			long2Ip(elem.first, userIp);
+			long2Ip(elem.second, dnsIp);
+			outFile << dnsIp << "," << userIp << "/24" << endl;
+		}
+
+		outFile.close();
+		printf(" Dumping [%06u] Records of IPv4 DNS Data to file [%s] Completed.\n", dnsRecordCount, dnsFileName);
+		TheLog_nc_v2(Log::Info, name()," Dumping [%06u] Records of IPv4 DNS Data to file [%s] Completed.", dnsRecordCount, dnsFileName);
+
+		sprintf(dnsFinalFileName, "%s/%s_%d-%02d-%02d-%02d-%02d.csv",
+								IPGlobal::DNS_DIR.c_str(),
+								"dnsSubnetData",
+								year,
+								month,
+								day,
+								hour,
+								min);
+		string dsnFileFinalPath = string(dnsFinalFileName);
+
+		rename(dnsFilePath.c_str(), dsnFileFinalPath.c_str());
+
+		dnsRecordCount = 0;
+		string(dnsFileName).clear();
+		string(dnsFinalFileName).clear();
 	}
 }

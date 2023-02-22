@@ -20,6 +20,8 @@ EthernetParser::EthernetParser(uint16_t intfid, uint16_t rId)
 	this->udp 	= new UDPParser(this->interfaceId, this->routerId);
 	this->tcp 	= new TCPParser();
 
+	this->dnsHdrIpInfo	= new dnsHdrIp;
+
 	ip4Header = NULL;
 	udpHeader = NULL;
 
@@ -29,6 +31,7 @@ EthernetParser::~EthernetParser()
 {
 	delete (this->udp);
 	delete (this->tcp);
+	delete (this->dnsHdrIpInfo);
 }
 
 void EthernetParser::hexDump(const void* pv, int len)
@@ -116,11 +119,14 @@ void EthernetParser::parseIPV4Packet(const BYTE packet, headerInfo *hdrObj)
 							{
 								udp->parseFortiPacket(packet + hdrObj->ipLen, hdrObj);
 							}
-							else if((sPort == Dns) && ((hdrObj->pckLen - protoLen) >= 12) && IPGlobal::PROCESS_DNS)
+							else if(((hdrObj->pckLen - protoLen) >= 12) && IPGlobal::PROCESS_DNS)
 							{
 								uint16_t dnsLen = protoLen - UDP_HDR_LEN ;
+								dnsHdrIpInfo->reset();
+								extractDnsIpv4Address(packet, dnsHdrIpInfo);
+
 								udp->lockDnsMap();
-								udp->parsePacketDNS(packet + hdrObj->ipLen + UDP_HDR_LEN, dnsLen);
+								udp->parsePacketDNS(packet + hdrObj->ipLen + UDP_HDR_LEN, dnsLen, dnsHdrIpInfo);
 								udp->unLockDnsMap();
 							}
 							else if(locator >= 1 && locator <= 26)
@@ -146,4 +152,21 @@ uint16_t EthernetParser::extractIpv4Address(const BYTE packet)
 	sIp = (sIp << 8) + (0xff & packet[offset + 3]);
 
 	return(initSection::routerIdMap[sIp]);
+}
+
+void EthernetParser::extractDnsIpv4Address(const BYTE packet, dnsHdrIp *info)
+{
+	uint16_t offset = 12;
+
+	info->sourceIp = (info->sourceIp << 8) + (0xff & packet[offset]);
+	info->sourceIp = (info->sourceIp << 8) + (0xff & packet[offset + 1]);
+	info->sourceIp = (info->sourceIp << 8) + (0xff & packet[offset + 2]);
+	info->sourceIp = (info->sourceIp << 8) + (0xff & packet[offset + 3]);
+
+	offset = offset + 4;
+
+	info->destIp = (info->destIp << 8) + (0xff & packet[offset]);
+	info->destIp = (info->destIp << 8) + (0xff & packet[offset + 1]);
+	info->destIp = (info->destIp << 8) + (0xff & packet[offset + 2]);
+	info->destIp = (info->destIp << 8) + (0xff & packet[offset + 3]);
 }

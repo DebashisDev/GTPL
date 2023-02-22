@@ -28,6 +28,7 @@
 #include "IPGlobal.h"
 #include "UdpFlusher.h"
 #include "Initialize.h"
+#include "FUtility.h"
 
 
 #define handle_error_en(en, msg) \
@@ -65,6 +66,9 @@ class SpectaProbe : public BaseConfig
 		pthread_t 			psThread;
 
 		ofstream	 		rIpHandler;
+		ofstream    		outFile;
+
+		uint32_t 			dnsIp;
 
 		Initialize			*pInit;
 
@@ -86,6 +90,9 @@ class SpectaProbe : public BaseConfig
 
 		void	dnsDumpIpv4Data(string dir);
 		void	dnsDumpIpv6Data(string dir);
+
+		void 		dnsSubnetDumpData(uint16_t min, uint16_t hour, uint16_t day, uint16_t month, uint16_t year);
+
 	public:
 		SpectaProbe(char *fileName);
 		~SpectaProbe();

@@ -34,4 +34,7 @@ void glbTimer::run()
 		IPGlobal::CURRENT_MONTH 			= 1 + now_tm->tm_mon;
 		IPGlobal::CURRENT_YEAR 				= 1900 + now_tm->tm_year;
 	}
+	printf("  Timer Thread Stopped...\n");
+	pthread_detach(pthread_self());
+	pthread_exit(NULL);
 }

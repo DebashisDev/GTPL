@@ -69,7 +69,6 @@ void CflowSM::processQueue(uint16_t tIdx)
 	for(uint16_t iId = 0; iId < IPGlobal::NO_OF_INTERFACES; iId++)
 		for(uint16_t rId = 0; rId < IPGlobal::ROUTER_PER_INTERFACE[iId]; rId++)
 			pushToCflowSMInterface(cFlowSM::cFlowSMStoreCnt[smId][iId][rId][tIdx], cFlowSM::cFlowSMStore[smId][iId][rId][tIdx]);
-
 }
 
 void CflowSM::pushToCflowSMInterface(uint32_t &cnt, std::unordered_map<uint32_t, cFlow**> &data)

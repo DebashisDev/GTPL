@@ -82,6 +82,7 @@ namespace DNSGlobal
 {
 	std::map<uint32_t, std::string> dnsLookUpMap[10];
 	std::map<std::string, std::string> dnsV6LookUpMap;
+	std::map<uint32_t, uint32_t> dnsSubnetMap;
 }
 
 namespace aaaGlbMap

@@ -441,39 +441,299 @@ uint32_t UDPParser::HextoDigits(char *hexadecimal)
 
 /* DNS */
 
-void UDPParser::parsePacketDNS(const BYTE packet, uint16_t dnsLen)
+uint64_t UDPParser::parsePacketDNS(const BYTE packet, uint16_t dnsLen, dnsHdrIp *info)
 {
-    uint32_t pos = 0, id_pos = 0;
-    uint16_t qdcount = 0, ancount = 0, retPos = 0;
+	int8_t dnsResponseCode = -1;
+    uint32_t pos = 0, id_pos = 0, sourceIp = 0;
+    uint16_t qdcount = 0, ancount = 0, retPos = 0 , counter = 0;
+    int8_t dnsQRFlag = -1;
 
-    char URL[50];
+    char URL[50], userIp[20], uIp[20];
     URL[0] = 0;
 
-    uint8_t dnsQRFlag 			= packet[pos+2] >> 7;					    // Query Response -> Question=0 and Answer=1
+    dnsQRFlag 			= packet[pos+2] >> 7;					    // Query Response -> Question=0 and Answer=1
 
     /*
      * RCODE = 0 - No Error, 1- Format Error, 2- Server Error, 3- Name Error, 4- Not Implemented, 5- Refused.
      */
 
-    if(dnsQRFlag == 1)
+    switch(dnsQRFlag)
     {
-				qdcount = (packet[pos+4] << 8) + packet[pos+5];			// Query Count
-				ancount = (packet[pos+6] << 8) + packet[pos+7];			// Answer Count
+    	case 0:
+    		ipToLong((char *)IPGlobal::DNS_IP.c_str(), &dnsIp);
 
-				uint8_t dnsResponseCode = packet[pos + 3] & 0x0f;		// rcode will be there in case of Response (Answer = 1)
-
-				if (dnsResponseCode != 0) // Earlier 26
-					return;
-
-				if(qdcount == 1 && (ancount > 0 && ancount <= 2))
+    		if(dnsIp == info->destIp)
+    		{
+				for(counter = 0; counter < IPGlobal::GANDHINAGAR_COUNT; counter++)
 				{
-					if(parsePacketDNSQueries((pos + DNS_HDR_LEN), id_pos, (const BYTE)packet, &retPos, dnsLen, URL))
-						if(dnsResponseCode == 0)
-							parsePacketDNSAnswers(retPos, packet, ancount, URL);
-					else
-						return;
+					if(IsIPInRange(info->sourceIp, IPGlobal::GANDHINAGAR[counter][0], IPGlobal::GANDHINAGAR[counter][1]))
+					{
+						updatedns(IPGlobal::GANDHINAGAR[counter][0] , info->destIp);
+						return 1;
+					}
 				}
+
+				for(counter = 0; counter < IPGlobal::JUNAGADH_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::JUNAGADH[counter][0], IPGlobal::JUNAGADH[counter][1]))
+					{
+						updatedns(IPGlobal::JUNAGADH[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::NADIAD_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::NADIAD[counter][0], IPGlobal::NADIAD[counter][1]))
+					{
+						updatedns(IPGlobal::NADIAD[counter][0] , info->destIp);
+						return 1;
+
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::AHMEDABAD_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::AHMEDABAD[counter][0], IPGlobal::AHMEDABAD[counter][1]))
+					{
+						updatedns(IPGlobal::AHMEDABAD[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::ANAND_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::ANAND[counter][0], IPGlobal::ANAND[counter][1]))
+					{
+						updatedns(IPGlobal::ANAND[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::ANKLESHWAR_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::ANKLESHWAR[counter][0], IPGlobal::ANKLESHWAR[counter][1]))
+					{
+						updatedns(IPGlobal::ANKLESHWAR[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::BARDOLI_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::BARDOLI[counter][0], IPGlobal::BARDOLI[counter][1]))
+					{
+						updatedns(IPGlobal::BARDOLI[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::BARODA_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::BARODA[counter][0], IPGlobal::BARODA[counter][1]))
+					{
+						updatedns(IPGlobal::BARODA[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::BHARUCH_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::BHARUCH[counter][0], IPGlobal::BHARUCH[counter][1]))
+					{
+						updatedns(IPGlobal::BHARUCH[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::BHAVNAGAR_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::BHAVNAGAR[counter][0], IPGlobal::BHAVNAGAR[counter][1]))
+					{
+						updatedns(IPGlobal::BHAVNAGAR[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::BILIMORA_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::BILIMORA[counter][0], IPGlobal::BILIMORA[counter][1]))
+					{
+						updatedns(IPGlobal::BILIMORA[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::HALOL_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::HALOL[counter][0], IPGlobal::HALOL[counter][1]))
+					{
+						updatedns(IPGlobal::HALOL[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::JAIPUR_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::JAIPUR[counter][0], IPGlobal::JAIPUR[counter][1]))
+					{
+						updatedns(IPGlobal::JAIPUR[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::JAMNAGAR_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::JAMNAGAR[counter][0], IPGlobal::JAMNAGAR[counter][1]))
+					{
+						updatedns(IPGlobal::JAMNAGAR[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::KIM_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::KIM[counter][0], IPGlobal::KIM[counter][1]))
+					{
+						updatedns(IPGlobal::KIM[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::MEHSANA_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::MEHSANA[counter][0], IPGlobal::MEHSANA[counter][1]))
+					{
+						updatedns(IPGlobal::MEHSANA[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::MODASA_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::MODASA[counter][0], IPGlobal::MODASA[counter][1]))
+					{
+						updatedns(IPGlobal::MODASA[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::MORBI_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::MORBI[counter][0], IPGlobal::MORBI[counter][1]))
+					{
+						updatedns(IPGlobal::MORBI[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::NAVSARI_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::NAVSARI[counter][0], IPGlobal::NAVSARI[counter][1]))
+					{
+						updatedns(IPGlobal::NAVSARI[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+
+				for(counter = 0; counter < IPGlobal::PATNA_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::PATNA[counter][0], IPGlobal::PATNA[counter][1]))
+					{
+						updatedns(IPGlobal::PATNA[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::PUNE_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::PUNE[counter][0], IPGlobal::PUNE[counter][1]))
+					{
+						updatedns(IPGlobal::PUNE[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::RAJKOT_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::RAJKOT[counter][0], IPGlobal::RAJKOT[counter][1]))
+					{
+						updatedns(IPGlobal::RAJKOT[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::SURAT_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::SURAT[counter][0], IPGlobal::SURAT[counter][1]))
+					{
+						updatedns(IPGlobal::SURAT[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::UNJHA_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::UNJHA[counter][0], IPGlobal::UNJHA[counter][1]))
+					{
+						updatedns(IPGlobal::UNJHA[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::VAPI_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::VAPI[counter][0], IPGlobal::VAPI[counter][1]))
+					{
+						updatedns(IPGlobal::VAPI[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				for(counter = 0; counter < IPGlobal::VARANASI_COUNT; counter++)
+				{
+					if(IsIPInRange(info->sourceIp, IPGlobal::VARANASI[counter][0], IPGlobal::VARANASI[counter][1]))
+					{
+						updatedns(IPGlobal::VARANASI[counter][0] , info->destIp);
+						return 1;
+					}
+				}
+
+				if(dnsIp == 737134620) // Only in case of HYD DNS IP
+				{
+					longToIp(info->sourceIp, uIp);
+					zeroPadding(uIp, userIp);
+					ipToLong(userIp, &sourceIp);
+					updatedns(sourceIp, info->destIp);
+				}
+    		}
+				break;
+
+    	case 1:
+    		qdcount = (packet[pos+4] << 8) + packet[pos+5];			// Query Count
+    		ancount = (packet[pos+6] << 8) + packet[pos+7];			// Answer Count
+
+    		dnsResponseCode = packet[pos + 3] & 0x0f;		// rcode will be there in case of Response (Answer = 1)
+
+    		if (dnsResponseCode != 0) // Earlier 26
+    			return 0;
+
+    		if(qdcount == 1 && (ancount > 0 && ancount <= 2))
+    		{
+    			if(parsePacketDNSQueries((pos + DNS_HDR_LEN), id_pos, (const BYTE)packet, &retPos, dnsLen, URL))
+    				if(dnsResponseCode == 0)
+    					parsePacketDNSAnswers(retPos, packet, ancount, URL);
+    			else
+    				return 0;
+    		}
+    		break;
+
+    	default:
+    		return 0;
+    		break;
     }
+    dnsQRFlag = -1;
 }
 
 bool UDPParser::parsePacketDNSQueries(uint32_t pos, uint32_t id_pos, const BYTE packet, uint16_t *retPos, uint16_t dnsLen, char* URL)
@@ -580,6 +840,16 @@ void UDPParser::parsePacketDNSAnswers(uint16_t pos, const BYTE packet, uint16_t 
 	{
 		std::cout << " a standard exception was caught, with message '"  << "'\n";
 	}
+}
+
+bool UDPParser::IsIPInRange(uint32_t ip, uint32_t network, uint32_t mask)
+{
+    uint32_t net_lower = (network & mask);
+    uint32_t net_upper = (net_lower | (~mask));
+
+    if(ip >= net_lower && ip <= net_upper)
+        return true;
+    return false;
 }
 
 string UDPParser::read_rr_name(const uint8_t * packet, uint32_t * packet_p, uint32_t id_pos, uint16_t len)
@@ -855,4 +1125,19 @@ uint32_t UDPParser::ipToLong(char *ip, uint32_t *plong)
 		return 1;
 	else
 		return *plong;
+}
+
+void UDPParser::updatedns(uint32_t sIp,uint32_t dIp)
+{
+	DNSGlobal::dnsSubnetMap[sIp] = dIp;
+}
+
+uint32_t UDPParser::longToIp(uint32_t sIp , char *ipAddress)
+{
+    unsigned char bytes[4];
+    bytes[0] = sIp & 0xFF;
+    bytes[1] = (sIp >> 8) & 0xFF;
+    bytes[2] = (sIp >> 16) & 0xFF;
+    bytes[3] = (sIp >> 24) & 0xFF;
+    sprintf(ipAddress, "%u.%u.%u.%u", bytes[3], bytes[2], bytes[1], bytes[0]);
 }

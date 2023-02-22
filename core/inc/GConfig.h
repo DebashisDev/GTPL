@@ -27,6 +27,7 @@ private:
 		void closeConfigFile();
 
 		void 	get_probeId(std::string& Key);
+		void 	get_dnsId(std::string& Key);
 		void	get_logLevel(std::string& Key);
 		void	get_printStats(std::string& Key);
 		void	get_printStatsFrequency(std::string& Key);
@@ -35,6 +36,7 @@ private:
 		void	get_xdrDir(std::string& Key);
 		void	get_ipDir(std::string& Key);
 		void	get_dataDir(std::string& Key);
+		void	get_dnsDir(std::string& Key);
 
 		void	get_processCflow(std::string& Key);
 		void	get_processForti(std::string& Key);
@@ -69,6 +71,13 @@ private:
 
 		void 	converSubNetToRange(char *ipr, char *Start, char *End);
 		uint32_t ipToLong(char *ip, uint32_t *plong);
+
+		void	get_AHMDNS(std::string& Key);
+		void	get_BRODNS(std::string& Key);
+		void	get_RAJDNS(std::string& Key);
+		void	get_SURDNS(std::string& Key);
+		void	get_PATDNS(std::string& Key);
+		void	get_HYDDNS(std::string& Key);
 
 		void	get_GANDHINAGAR(std::string& Key);
 		void	get_JUNAGADH(std::string& Key);

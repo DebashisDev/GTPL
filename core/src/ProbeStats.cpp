@@ -52,9 +52,9 @@ void ProbeStats::run()
 			{
 				printloopCnt = 0;
 				printInterfaceStats(buffer);
-				printCflowSMStats();
-				printFortiSMStats();
-				printFlusherStats();
+				if(IPGlobal::PROCESS_CFLOW)			printCflowSMStats();
+				if(IPGlobal::PROCESS_FORTI)			printFortiSMStats();
+				if(IPGlobal::PROCESS_CFLOW)			printFlusherStats();
 				printf("\n\n");
 			}
 		}
