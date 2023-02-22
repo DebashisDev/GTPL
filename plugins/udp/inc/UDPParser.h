@@ -16,6 +16,7 @@
 #include "Log.h"
 #include "time.h"
 #include "DnsData.h"
+#include "SpectaTypedef.h"
 
 #define DIRECTION_LEN	1
 #define PORT_LEN		2
@@ -34,12 +35,14 @@ class UDPParser : public DnsData
 {
 	private:
 		uint16_t 	iId, rId, cFlowSm, fortiSm, valueLoop, locationId;
-		uint32_t 	timeStamp, publicIpLong, privateIpLong;
+		uint32_t 	timeStamp, publicIpLong, privateIpLong, dnsIp;
 		uint16_t 	len, lenToProcess, lenProcessed, flowSetId, noOfFlowId, flowSetLen;
 		BYTE 		buffer;
 		uint8_t 	noOffGateFlows = 1;
 		std::string first, second, data, temp;
 		std::string privateIp;
+		ofstream    outFile;
+		char 		dnsFilePath[300];
 
 
 		void		decodeNetFlow(const BYTE packet, headerInfo *hdrObj);
@@ -49,6 +52,8 @@ class UDPParser : public DnsData
 		void		decodeForti(const BYTE packet, headerInfo *hdrObj);
 		void		parseMapping(const BYTE packet, headerInfo *hdrObj, uint16_t *locator);
 		uint32_t 	ipToLong(char *ip, uint32_t *plong);
+		void		updatedns(uint32_t sIp,uint32_t dIp);
+		uint32_t 	longToIp(uint32_t sIp , char *ipAddress);
 
 		void		decordFlowId(const BYTE packet, uint16_t* noOfFlows, uint8_t version);
 		uint16_t 	extractValues(const BYTE packet, uint8_t protocol, uint16_t *count, cFlow** t_array);
@@ -65,7 +70,7 @@ class UDPParser : public DnsData
 
 		uint32_t 	HextoDigits(char *hexadecimal);
 
-		void		pushToXdrAgent(cFlow** t_array);
+		void		pushToXdrAgentV4(cFlow** t_array);
 		void 		copyMsgObj(uint32_t &cnt, std::unordered_map<uint32_t, cFlow> &msg, cFlow *msgObj);
 
 		void		pushToFortiGWAgent(string xdr);
@@ -74,16 +79,17 @@ class UDPParser : public DnsData
 		static bool	parsePacketDNSQueries(uint32_t, uint32_t, const BYTE, uint16_t *retPos, uint16_t dnsLen, char* URL);
 		static string 	read_rr_name(const uint8_t *packet, uint32_t *packet_p, uint32_t id_pos, uint16_t len);
 		static void	parsePacketDNSAnswers(uint16_t pos, const BYTE packet, uint16_t ancount, char* URL);
+		bool 	IsIPInRange(uint32_t ip, uint32_t network, uint32_t mask);
 
 	public:
 
 		UDPParser(uint16_t intfId, uint16_t routerId);
 		~UDPParser();
 
-		void	parseUDPPacket(const BYTE packet, headerInfo *hdrObj);
-		void	parseFortiPacket(const BYTE packet, headerInfo *hdrObj);
-		static void	parsePacketDNS(const BYTE packet, uint16_t dnsLen);
-		void	parseMappingPacket(const BYTE packet, headerInfo *hdrObj, uint16_t *locator);
+		void		parseUDPPacket(const BYTE packet, headerInfo *hdrObj);
+		void		parseFortiPacket(const BYTE packet, headerInfo *hdrObj);
+		uint64_t 	parsePacketDNS(const BYTE packet, uint16_t dnsLen, dnsHdrIp *info);
+		void		parseMappingPacket(const BYTE packet, headerInfo *hdrObj, uint16_t *locator);
 
 		static void	lockAAAMap();
 		static void	unLockAAAMap();

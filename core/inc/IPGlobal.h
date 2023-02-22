@@ -315,38 +315,22 @@ typedef struct _headerInfo
 }headerInfo;
 
 
-typedef struct _bwData
+typedef struct _dnsHdrIp
 {
-	uint64_t Bw;
-	uint64_t upBw;
-	uint64_t dnBw;
+	uint32_t sourceIp;
+	uint32_t destIp;
 
-	uint64_t totalVol;
-	uint64_t upTotalVol;
-	uint64_t dnTotalVol;
-	uint64_t avgTotalBw;
-	uint64_t avgUpBw;
-	uint64_t avgDnBw;
-	uint64_t peakTotalVol;
-	uint64_t peakUpTotalVol;
-	uint64_t peakDnTotalVol;
-
-	_bwData()
+	_dnsHdrIp()
 	{
-		Bw = 0;
-		upBw = 0;
-		dnBw = 0;
-		totalVol = 0;
-		upTotalVol = 0;
-		dnTotalVol = 0;
-		avgTotalBw = 0;
-		avgUpBw = 0;
-		avgDnBw = 0;
-		peakTotalVol = 0;
-		peakUpTotalVol = 0;
-		peakDnTotalVol = 0;
+		reset();
 	}
-}bwData;
+
+	void reset()
+	{
+		sourceIp = 0;
+		destIp = 0;
+	}
+}dnsHdrIp;
 
 namespace IPGlobal
 {
@@ -394,12 +378,16 @@ namespace IPGlobal
 	extern uint16_t	NO_OF_FLUSHER;
 	extern uint16_t	FLUSHER_CPU_CORE[MAX_AGENT_SUPPORT];
 
-	extern uint16_t PROBE_ID;
-	extern uint16_t LOG_LEVEL;
-	extern std::string LOG_DIR;
-	extern std::string XDR_DIR;
-	extern std::string IP_DIR;
-	extern std::string DATA_DIR;
+	extern uint16_t 	PROBE_ID;
+	extern uint16_t 	LOG_LEVEL;
+	extern std::string 	LOG_DIR;
+	extern std::string 	XDR_DIR;
+	extern std::string 	IP_DIR;
+	extern std::string 	DATA_DIR;
+	extern std::string 	DNS_DIR;
+
+	extern uint16_t		DNS_ID;
+	extern std::string	DNS_IP;
 
 	extern bool 	PRINT_STATS;
 	extern bool 	PROCESS_CFLOW;
@@ -452,6 +440,13 @@ namespace IPGlobal
 
 	extern string	ADMIN_PORT;
 	extern bool		ADMIN_FLAG;
+
+	extern std::string 	AHM_DNS	;
+	extern std::string 	BRO_DNS	;
+	extern std::string	RAJ_DNS	;
+	extern std::string 	SUR_DNS	;
+	extern std::string 	PAT_DNS	;
+	extern std::string 	HYD_DNS	;
 
 	extern uint16_t	MAX_PKT_LEN_PER_INTERFACE[MAX_INTERFACE_SUPPORT];
 	extern uint64_t	AGENT_PACKET_RECEIVED[MAX_AGENT_SUPPORT];

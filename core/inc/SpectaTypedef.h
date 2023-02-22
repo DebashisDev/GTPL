@@ -146,6 +146,33 @@ inline void long2Ip(uint32_t ipLong, char *ipAddress)
     sprintf(ipAddress, "%u.%u.%u.%u", bytes[3], bytes[2], bytes[1], bytes[0]);
 }
 
+inline void zeroPadding(char *uIp , char *userIp)
+{
+	uint8_t 	i = 0;
+	uint16_t	oct1=0;
+	uint16_t 	oct2=0;
+	uint16_t 	oct3=0;
+	uint16_t 	oct4=0;
+
+    const char s[2] = ".";
+    char *token;
+
+    token = strtok(uIp, s);
+    oct1 = atoi(token);
+
+    while( token != NULL )
+    {
+                    token = strtok(NULL, s);
+
+                    if(i==0)        oct2 = atoi(token);
+                    else if(i==1)	oct3 = atoi(token);
+                    else if(i==2)	oct4 = atoi(token);
+                    i++;
+    }
+    oct4 = 0;
+    sprintf(userIp,"%d.%d.%d.%d",oct1,oct2,oct3,oct4);
+}
+
 #if 1
 inline void getTime_cFlow(uint32_t sEpochSec, double duration, char *startDT, char *endDT, uint16_t *milisec)
 {

@@ -9,6 +9,8 @@
 
 #include "SpectaProbe.h"
 
+/* Signal Catcher Function */
+
 void sig_handler(int signo)
 {
 	uint16_t cnt = 0;

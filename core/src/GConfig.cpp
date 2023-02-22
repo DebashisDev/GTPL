@@ -27,6 +27,7 @@ void GConfig::initialize(char *fileName)
 			fp >> Key;
 
 			get_probeId(Key);								/* PROBE_ID */
+			get_dnsId(Key);									/* DNS_ID */
 			get_logLevel(Key);								/* LOG_LEVEL */
 			get_printStats(Key);							/* PRINT_STATS */
 			get_printStatsFrequency(Key);					/* PRINT_STATS_FREQ_SEC */
@@ -36,6 +37,7 @@ void GConfig::initialize(char *fileName)
 			get_xdrDir(Key);								/* XDR_DIR */
 			get_ipDir(Key);									/* IP-DATA_DIR */
 			get_dataDir(Key);								/* DATA_DIR */
+			get_dnsDir(Key);								/* DATA_DIR */
 
 			get_processCflow(Key);							/* PROCESS_CFLOW */
 			get_processForti(Key);							/* PROCESS_FORTI */
@@ -68,6 +70,13 @@ void GConfig::initialize(char *fileName)
 
 			get_noOfFlusher(Key);							/* NO_OF_FLUSHER */
 			get_flusherCPU(Key);							/* FLUSHER_CPU_CORE */
+
+			get_AHMDNS(Key);								/* AHMEDABAD DNS */
+			get_BRODNS(Key);								/* BORODA DNS */
+			get_RAJDNS(Key);								/* RAJKOT DNS */
+			get_SURDNS(Key);								/* SURAT DNS */
+			get_PATDNS(Key);								/* PATNA DNS */
+			get_HYDDNS(Key);								/* HYDERABAD DNS */
 
 			get_GANDHINAGAR(Key);							/* GANDHINAGAR */
 			get_JUNAGADH(Key);								/* JUNAGADH */
@@ -722,6 +731,78 @@ void GConfig::get_staticIp_VARANASI(std::string& Key)
 			cnt++;
 		}
 		printf("VARANASI_STATIC = %d\n", cnt);
+	}
+}
+
+void GConfig::get_AHMDNS(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("AHM_DNS") == 0)
+	{
+		fp >> Value;
+		IPGlobal::AHM_DNS = Value;
+		printf("\tAHM_DNS               			:: %s\n", IPGlobal::AHM_DNS.c_str());
+	}
+}
+
+void GConfig::get_BRODNS(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("BRO_DNS") == 0)
+	{
+		fp >> Value;
+		IPGlobal::BRO_DNS = Value;
+		printf("\tBRO_DNS               			:: %s\n", IPGlobal::BRO_DNS.c_str());
+	}
+}
+
+void GConfig::get_RAJDNS(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("RAJ_DNS") == 0)
+	{
+		fp >> Value;
+		IPGlobal::RAJ_DNS = Value;
+		printf("\tRAJ_DNS               			:: %s\n", IPGlobal::RAJ_DNS.c_str());
+	}
+}
+
+void GConfig::get_SURDNS(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("SUR_DNS") == 0)
+	{
+		fp >> Value;
+		IPGlobal::SUR_DNS = Value;
+		printf("\tSUR_DNS               			:: %s\n", IPGlobal::SUR_DNS.c_str());
+	}
+}
+
+void GConfig::get_PATDNS(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("PAT_DNS") == 0)
+	{
+		fp >> Value;
+		IPGlobal::PAT_DNS = Value;
+		printf("\tPAT_DNS               			:: %s\n", IPGlobal::PAT_DNS.c_str());
+	}
+}
+
+void GConfig::get_HYDDNS(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("HYD_DNS") == 0)
+	{
+		fp >> Value;
+		IPGlobal::HYD_DNS = Value;
+		printf("\tHYD_DNS               			:: %s\n", IPGlobal::HYD_DNS.c_str());
 	}
 }
 
@@ -1467,6 +1548,19 @@ void GConfig::get_probeId(std::string& Key)
 	}
 }
 
+void GConfig::get_dnsId(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("DNS_ID") == 0)
+	{
+		fp >> Value;
+		IPGlobal::DNS_ID = atol(Value.c_str());
+		printf("\tDNS_ID               			:: %d\n", IPGlobal::DNS_ID);
+	}
+}
+
+
 void GConfig::get_logLevel(std::string& Key)
 {
 	Value.clear();
@@ -1599,6 +1693,18 @@ void GConfig::get_dataDir(std::string& Key)
 		fp >> Value;
 		IPGlobal::DATA_DIR = Value;
 		printf("\tDATA_DIR               			:: %s\n", IPGlobal::DATA_DIR.c_str());
+	}
+}
+
+void GConfig::get_dnsDir(std::string& Key)
+{
+	Value.clear();
+
+	if(Key.compare("DNS_DIR") == 0)
+	{
+		fp >> Value;
+		IPGlobal::DNS_DIR = Value;
+		printf("\tDNS_DIR               			:: %s\n", IPGlobal::DNS_DIR.c_str());
 	}
 }
 

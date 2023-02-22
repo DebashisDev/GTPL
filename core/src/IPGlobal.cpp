@@ -66,6 +66,10 @@ namespace IPGlobal
 	std::string XDR_DIR;
 	std::string IP_DIR;
 	std::string DATA_DIR;
+	std::string DNS_DIR;
+
+	uint16_t	DNS_ID	= 0;
+	std::string	DNS_IP	= "";
 
 	bool 		PRINT_STATS 			= false;
 	bool 		PROCESS_CFLOW 			= false;
@@ -109,6 +113,14 @@ namespace IPGlobal
 
 	string		ADMIN_PORT;
 	bool		ADMIN_FLAG = false;
+
+	std::string 		AHM_DNS	;
+	std::string 		BRO_DNS	;
+	std::string 		RAJ_DNS	;
+	std::string 		SUR_DNS	;
+	std::string 		PAT_DNS	;
+	std::string 		HYD_DNS	;
+
 
 	uint16_t	MAX_PKT_LEN_PER_INTERFACE[MAX_INTERFACE_SUPPORT] = {0};
 	uint64_t	AGENT_PACKET_RECEIVED[MAX_AGENT_SUPPORT] = {0};
