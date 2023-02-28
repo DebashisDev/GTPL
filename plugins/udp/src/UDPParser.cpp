@@ -190,6 +190,7 @@ void UDPParser::decordFlowId(const BYTE packet, uint16_t* noOfFlows, uint8_t ver
 
 	t_array[0]->noOfFlows = valueLoop;
 	t_array[0]->locationId = locationId;
+	t_array[0]->ipVersion = version;
 
 	switch(t_array[0]->ipVersion)
 	{
@@ -198,6 +199,11 @@ void UDPParser::decordFlowId(const BYTE packet, uint16_t* noOfFlows, uint8_t ver
 					break;
 
 		case IPVersion6:
+					for(uint8_t i = 0; i < *noOfFlows; i++)
+					{
+						free(t_array[i]);
+					}
+					free(t_array);
 					break;
 	}
 }
