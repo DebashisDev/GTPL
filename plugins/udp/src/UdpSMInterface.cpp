@@ -698,7 +698,7 @@ udpSession* UdpSMInterface::udpGetSession(cFlow *pcFlow, bool *found, bool creat
 						pUdpSession->reset();
 
 						pUdpSession->sessionIpV4Key = ipV4Key;
-						pUdpSession->smInstanceId = this->instanceId;
+//						pUdpSession->smInstanceId = this->instanceId;
 						pUdpSession->mapIndex = mapIndex;
 						pUdpSession->poolIndex = poolIndex;
 						udpV4SessionMap[pUdpSession->mapIndex][pUdpSession->sessionIpV4Key] = poolIndex;
@@ -822,9 +822,9 @@ void UdpSMInterface::updateUdpSession(udpSession *pUdpSession, cFlow *pcFlow)
 	/** Check the Data Slicing **/
 	if(pUdpSession->totalFrCount >= IPGlobal::SESSION_PKT_LIMIT)
 	{
-		pUdpSession->causeCode = SYSTEM_PKTLIMIT_UDP_DATA;
+//		pUdpSession->causeCode = SYSTEM_PKTLIMIT_UDP_DATA;
 
-		udpFlushSession(5, pUdpSession, true);
+		udpFlushSession(pUdpSession, true);
 //		pUdpSession->reuse();
 //		pUdpSession->startTimeEpochSec = pcFlow->sEpochSec;
 	}
@@ -836,9 +836,9 @@ void UdpSMInterface::updateUdpSession(udpSession *pUdpSession, cFlow *pcFlow)
 
 			if (timeDiff >= IPGlobal::SESSION_TIME_LIMIT)
 			{
-				pUdpSession->causeCode = SYSTEM_TIMEOUT_UDP_DATA;
+//				pUdpSession->causeCode = SYSTEM_TIMEOUT_UDP_DATA;
 
-				udpFlushSession(9, pUdpSession, true);
+				udpFlushSession(pUdpSession, true);
 //				pUdpSession->reuse();
 			}
 		}
@@ -851,12 +851,9 @@ void UdpSMInterface::timeStampArrivalPacket(udpSession *pUdpSession, uint64_t ep
 	pUdpSession->pckLastTimeEpochSec 	= epochSec;
 }
 
-void UdpSMInterface::udpFlushSession(uint16_t flushOrgId, udpSession *pUdpSession, bool erase)
+void UdpSMInterface::udpFlushSession(udpSession *pUdpSession, bool erase)
 {
 	uint64_t epochSec = IPGlobal::CURRENT_EPOCH_SEC;
-
-	pUdpSession->flushOrgId = flushOrgId;
-	pUdpSession->flushTime = epochSec;
 
 	checkSanityDestIp(pUdpSession);
 	checkStaticIP(pUdpSession);
@@ -960,12 +957,12 @@ void UdpSMInterface::udpCleanSession(udpSession *pUdpSession)
 
 	if(diffrence > IPGlobal::UDP_CLEAN_UP_TIMEOUT_SEC)
 	{
-		if (pUdpSession->pType == PACKET_IPPROTO_UDP)
-			pUdpSession->causeCode = SYSTEM_CLEANUP_UDP_DATA;
+//		if (pUdpSession->pType == PACKET_IPPROTO_UDP)
+//			pUdpSession->causeCode = SYSTEM_CLEANUP_UDP_DATA;
 
 		sessionCleanCnt++;
 		IPStats::udpV4SessionCleaned[instanceId]++;
-		udpFlushSession(7, pUdpSession, true);
+		udpFlushSession(pUdpSession, true);
 	}
 }
 
@@ -985,15 +982,15 @@ void UdpSMInterface::udpEraseSession(udpSession *pUdpSession)
 		}
 		break;
 
-		case IPVersion6:
-		{
-			string sKey6 = pUdpSession->ipV6sessionKey;
-			idx = pUdpSession->mapIndex;
-			poolIndex = pUdpSession->poolIndex;
-			udpReleaseIndex(poolIndex);
-			udpV6SessionMap[idx].erase(sKey6);
-		}
-		break;
+//		case IPVersion6:
+//		{
+//			string sKey6 = pUdpSession->ipV6sessionKey;
+//			idx = pUdpSession->mapIndex;
+//			poolIndex = pUdpSession->poolIndex;
+//			udpReleaseIndex(poolIndex);
+//			udpV6SessionMap[idx].erase(sKey6);
+//		}
+//		break;
 	}
 }
 

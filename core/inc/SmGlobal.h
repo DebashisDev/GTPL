@@ -309,7 +309,6 @@ typedef struct _dnsSession
 typedef struct _udpSession
 {
     uint8_t		ipVer;
-	uint8_t		causeCode;
 	uint8_t		pType;
     bool	 	staticIp;
     uint16_t 	sPort;
@@ -317,8 +316,6 @@ typedef struct _udpSession
     uint16_t 	upPLoadPkt;
     uint16_t 	dnPLoadPkt;
     uint16_t 	totalFrCount;
-	uint16_t	smInstanceId;
-	uint16_t	flushOrgId;
 	uint16_t	routerLocationId;
     uint32_t	sIpv4;
     uint32_t	dIpv4;
@@ -334,9 +331,7 @@ typedef struct _udpSession
     uint64_t	endTimeEpochSec;
 
     uint64_t	sessionIpV4Key;
-    std::string ipV6sessionKey;
-	uint64_t 	flushTime;
-    char 		userId[IPV6_ADDR_LEN];
+//    std::string ipV6sessionKey;
     char		sIpv6[IPV6_ADDR_LEN];
     char		dIpv6[IPV6_ADDR_LEN];
 
@@ -348,7 +343,6 @@ typedef struct _udpSession
 	void reset()
 	{
 		this->ipVer 		= 0;
-		this->causeCode		= 0;
 		this->pType			= 0;
 		this->staticIp		= false;
 		this->sPort			= 0;
@@ -356,8 +350,6 @@ typedef struct _udpSession
 		this->upPLoadPkt	= 0;
 		this->dnPLoadPkt	= 0;
 		this->totalFrCount	= 0;
-		this->smInstanceId	= 0;
-		this->flushOrgId	= 0;
 		this->routerLocationId	= 0;
 		this->sIpv4			= 0;
 		this->dIpv4			= 0;
@@ -372,9 +364,7 @@ typedef struct _udpSession
 	    this->endTimeEpochSec			= 0;
 
 	    this->sessionIpV4Key			= 0;
-	    ipV6sessionKey.clear();
-	    this->flushTime					= 0;
-	    userId[0] = 0;
+//	    ipV6sessionKey.clear();
 	    sIpv6[0] = 0;
 	    dIpv6[0] = 0;
 	}
@@ -399,7 +389,6 @@ typedef struct _udpSession
 	_udpSession(const _udpSession& obj)
 	{
 		this->ipVer 		= obj.ipVer;
-		this->causeCode		= obj.causeCode;
 		this->pType			= obj.pType;
 		this->staticIp		= obj.staticIp;
 		this->sPort			= obj.sPort;
@@ -407,8 +396,6 @@ typedef struct _udpSession
 		this->upPLoadPkt	= obj.upPLoadPkt;
 		this->dnPLoadPkt	= obj.dnPLoadPkt;
 		this->totalFrCount	= obj.totalFrCount;
-		this->smInstanceId	= obj.smInstanceId;
-		this->flushOrgId	= obj.flushOrgId;
 		this->routerLocationId	= obj.routerLocationId;
 		this->sIpv4			= obj.sIpv4;
 		this->dIpv4			= obj.dIpv4;
@@ -423,9 +410,7 @@ typedef struct _udpSession
 	    this->endTimeEpochSec			= obj.endTimeEpochSec;
 
 	    this->sessionIpV4Key			= obj.sessionIpV4Key;
-	    this->ipV6sessionKey 			= obj.ipV6sessionKey;
-	    this->flushTime					= obj.flushTime;
-	    strcpy(this->userId, obj.userId);
+//	    this->ipV6sessionKey 			= obj.ipV6sessionKey;
 	    strcpy(this->sIpv6, obj.sIpv6);
 	    strcpy(this->dIpv6, obj.dIpv6);
 	}
@@ -433,7 +418,6 @@ typedef struct _udpSession
 	void copy(const _udpSession* obj)
 	{
 		this->ipVer 		= obj->ipVer;
-		this->causeCode		= obj->causeCode;
 		this->pType			= obj->pType;
 		this->staticIp		= obj->staticIp;
 		this->sPort			= obj->sPort;
@@ -441,8 +425,6 @@ typedef struct _udpSession
 		this->upPLoadPkt	= obj->upPLoadPkt;
 		this->dnPLoadPkt	= obj->dnPLoadPkt;
 		this->totalFrCount	= obj->totalFrCount;
-		this->smInstanceId	= obj->smInstanceId;
-		this->flushOrgId	= obj->flushOrgId;
 		this->routerLocationId	= obj->routerLocationId;
 		this->sIpv4			= obj->sIpv4;
 		this->dIpv4			= obj->dIpv4;
@@ -457,9 +439,7 @@ typedef struct _udpSession
 	    this->endTimeEpochSec			= obj->endTimeEpochSec;
 
 	    this->sessionIpV4Key			= obj->sessionIpV4Key;
-	    this->ipV6sessionKey 			= obj->ipV6sessionKey;
-	    this->flushTime					= obj->flushTime;
-	    strcpy(this->userId, obj->userId);
+//	    this->ipV6sessionKey 			= obj->ipV6sessionKey;
 	    strcpy(this->sIpv6, obj->sIpv6);
 	    strcpy(this->dIpv6, obj->dIpv6);
 	}

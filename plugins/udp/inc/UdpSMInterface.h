@@ -57,7 +57,7 @@ class UdpSMInterface : BaseConfig
 
 			void 			udpEraseSession(udpSession *pUdpSession);
 
-			void 			udpFlushSession(uint16_t id, udpSession *pUdpSession, bool erase);
+			void 			udpFlushSession(udpSession *pUdpSession, bool erase);
 			void 			udpStoreSession(uint16_t index, udpSession *pUdpSession);
 
 			void 			udpCleanSession(udpSession *pUdpSession);
