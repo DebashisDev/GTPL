@@ -239,7 +239,7 @@ void SpectaProbe::start()
 			IPGlobal::discarded_packets_i_6 = 0;
 			IPGlobal::discarded_packets_i_7 = 0;
 
-			TheLog_nc(Log::Info, name(),"  Day Changed .... !!! Going to Stop Packet Processing .. !!");
+			TheLog_nc(Log::Info, name(),"  Going to Stop Packet Processing .. !!");
 			packetProcessing(false);				/* ---- Pause the incoming Traffic ---- */
 
 			sleep (300);
