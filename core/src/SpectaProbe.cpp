@@ -229,7 +229,7 @@ void SpectaProbe::start()
 		if(lastday != today)
 		{
 			lastday = today;
-			TheLog_nc_v1(Log::Info, name(),"  Day Changed .... !!! Initializing Counters....%s", "");
+			TheLog_nc(Log::Info, name(),"  Day Changed .... !!! Initializing Counters....%s");
 			IPGlobal::discarded_packets_i_0 = 0;
 			IPGlobal::discarded_packets_i_1 = 0;
 			IPGlobal::discarded_packets_i_2 = 0;
@@ -238,6 +238,15 @@ void SpectaProbe::start()
 			IPGlobal::discarded_packets_i_5 = 0;
 			IPGlobal::discarded_packets_i_6 = 0;
 			IPGlobal::discarded_packets_i_7 = 0;
+
+			TheLog_nc(Log::Info, name(),"  Day Changed .... !!! Going to Stop Packet Processing .. !!");
+			packetProcessing(false);				/* ---- Pause the incoming Traffic ---- */
+
+			sleep (300);
+
+			TheLog_nc(Log::Info, name(),"  Start Packet Processing .. !!");
+			packetProcessing(true);				/* ---- Pause the incoming Traffic ---- */
+
 		}
 	}
 	printf("\n  SpectaProbe Shutdown Complete...\n");
