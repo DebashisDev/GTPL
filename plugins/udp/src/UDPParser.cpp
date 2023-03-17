@@ -312,10 +312,21 @@ void UDPParser::pushToXdrAgentV4(cFlow** t_array)
 {
 	uint16_t idx = PKT_WRITE_TIME_INDEX(IPGlobal::CURRENT_EPOCH_SEC, IPGlobal::TIME_INDEX);
 
-	cFlowSM::cFlowSMStore[cFlowSm][this->iId][rId][idx][cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx]] = t_array;
+	if(cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx + 2] == 0)
+	{
+		cFlowSM::cFlowSMStore[cFlowSm][this->iId][rId][idx][cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx]] = t_array;
 
-	cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx]++ ;
-	cFlowSm++;
+		cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx]++ ;
+		cFlowSm++;
+	}
+	else
+	{
+		for(uint8_t i = 0; i < t_array[0]->noOfFlows; i++)
+		{
+			free(t_array[i]);
+		}
+		free(t_array);
+	}
 
 	if(cFlowSm >= IPGlobal::NO_OF_CFLOW_SM)
 		cFlowSm = 0;
@@ -982,10 +993,15 @@ void UDPParser::pushToFortiGWAgent(string xdr)
 {
 	uint16_t idx = PKT_WRITE_TIME_INDEX(IPGlobal::CURRENT_EPOCH_SEC, IPGlobal::TIME_INDEX);
 
-	fortiGwSM::fortiGwSMStore[fortiSm][this->iId][rId][idx][fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]] = xdr;
+	if(fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx] == 0)
+	{
+		fortiGwSM::fortiGwSMStore[fortiSm][this->iId][rId][idx][fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]] = xdr;
 
-	fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]++ ;
-	fortiSm++;
+		fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]++ ;
+		fortiSm++;
+	}
+	else
+	{ xdr.clear(); }
 
 	if(fortiSm >= IPGlobal::NO_OF_FORTI_SM)
 		fortiSm = 0;

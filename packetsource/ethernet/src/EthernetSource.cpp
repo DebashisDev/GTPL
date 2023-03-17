@@ -179,6 +179,9 @@ void EthernetSource::packetReaderCallback(u_char *args, const struct pcap_pkthdr
 
 	if(!IPGlobal::PACKET_PROCESSING[intfId]) return; /* If packet processing is false don't Push Packet */
 
+	if(PKTStore::pktRepoCnt[intfId][ROUTER_TO_PROCESS][tIdx + 2 ] != 0)
+		return;
+
 	if(PKTStore::pktRepoBusy[intfId][ROUTER_TO_PROCESS][tIdx] || PKTStore::pktRepoCnt[intfId][ROUTER_TO_PROCESS][tIdx] >= MAX_PKT_ALLOWED_PER_TIME_INDEX)
 		return;
 

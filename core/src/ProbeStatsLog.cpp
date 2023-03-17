@@ -54,7 +54,7 @@ void ProbeStatsLog::run()
 		  {
 			  printloopCnt = 0;
 			  printInterfaceStats(buffer);
-			  printAgentStatus();
+//			  printAgentStatus();
 		  }
 	}
 }
