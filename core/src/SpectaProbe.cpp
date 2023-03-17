@@ -102,7 +102,6 @@ void SpectaProbe::initializeLog()
 	char logFile[200];
 	logFile[0] = 0;
 
-	mapAAALock::count		= 1;
 	mapDnsLock::count		= 1;
 
 	sprintf(logFile, "%s%s_%d.log", IPGlobal::LOG_DIR.c_str(), "cFlow", IPGlobal::PROBE_ID, IPGlobal::CURRENT_DAY, IPGlobal::CURRENT_MONTH, IPGlobal::CURRENT_YEAR);
