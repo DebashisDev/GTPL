@@ -94,7 +94,7 @@ SpectaProbe::SpectaProbe(char *fileName)
 SpectaProbe::~SpectaProbe()
 {
 	delete(pInit);
-	delete(GContainer::config);
+	delete(pGConfig);
 }
 
 void SpectaProbe::initializeLog()

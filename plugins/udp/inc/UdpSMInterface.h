@@ -30,8 +30,6 @@ using namespace std;
 class UdpSMInterface : BaseConfig
 {
 	private:
-
-			bool vpsFlag = true;
 			std::string ipV6Key;
 			uint16_t flusherNo = 0;
 			uint16_t instanceId = 0, location = 0;

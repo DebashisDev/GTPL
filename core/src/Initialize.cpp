@@ -25,25 +25,6 @@ void Initialize::unLockDnsMap()
     pthread_mutex_unlock(&mapDnsLock::lockCount);
 }
 
-void Initialize::lockAAAMap()
-{
-	pthread_mutex_lock(&mapAAALock::lockCount);
-	while (mapAAALock::count == 0)
-		pthread_cond_wait(&mapAAALock::nonzero, &mapAAALock::lockCount);
-	mapAAALock::count = mapAAALock::count - 1;
-	pthread_mutex_unlock(&mapAAALock::lockCount);
-}
-
-void Initialize::unLockAAAMap()
-{
-    pthread_mutex_lock(&mapAAALock::lockCount);
-    if (mapAAALock::count == 0)
-        pthread_cond_signal(&mapAAALock::nonzero);
-    mapAAALock::count = mapAAALock::count + 1;
-    pthread_mutex_unlock(&mapAAALock::lockCount);
-}
-
-
 Initialize::Initialize()
 {
 	_thisLogLevel = 0;
@@ -602,13 +583,13 @@ void Initialize::ipSubNet()
 //	unLockAAAMap();
 //}
 
-void Initialize::clearAAAData()
-{
-	lockAAAMap();
-	aaaGlbMap::aaaGlbUserIpMap.clear();
-
-	if(aaaGlbMap::aaaGlbUserIpMap.size() == 0 )
-		TheLog_nc_v1(Log::Info, name()," aaaGlbUserIpMap Size is %d", 0);
-
-	unLockAAAMap();
-}
+//void Initialize::clearAAAData()
+//{
+//	lockAAAMap();
+//	aaaGlbMap::aaaGlbUserIpMap.clear();
+//
+//	if(aaaGlbMap::aaaGlbUserIpMap.size() == 0 )
+//		TheLog_nc_v1(Log::Info, name()," aaaGlbUserIpMap Size is %d", 0);
+//
+//	unLockAAAMap();
+//}

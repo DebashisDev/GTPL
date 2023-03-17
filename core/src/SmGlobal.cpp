@@ -100,10 +100,3 @@ namespace mapDnsLock
 	pthread_cond_t nonzero = PTHREAD_COND_INITIALIZER;
 	unsigned count;
 }
-
-namespace mapAAALock
-{
-	pthread_mutex_t lockCount = PTHREAD_MUTEX_INITIALIZER;
-	pthread_cond_t nonzero = PTHREAD_COND_INITIALIZER;
-	unsigned count;
-}

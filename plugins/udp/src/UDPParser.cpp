@@ -37,24 +37,6 @@ UDPParser::UDPParser(uint16_t intfId, uint16_t routerId)
 UDPParser::~UDPParser()
 { }
 
-void UDPParser::lockAAAMap()
-{
-	    pthread_mutex_lock(&mapAAALock::lockCount);
-	    while (mapAAALock::count == 0)
-	        pthread_cond_wait(&mapAAALock::nonzero, &mapAAALock::lockCount);
-	    mapAAALock::count = mapAAALock::count - 1;
-	    pthread_mutex_unlock(&mapAAALock::lockCount);
-}
-
-void UDPParser::unLockAAAMap()
-{
-    pthread_mutex_lock(&mapAAALock::lockCount);
-    if (mapAAALock::count == 0)
-        pthread_cond_signal(&mapAAALock::nonzero);
-    mapAAALock::count = mapAAALock::count + 1;
-    pthread_mutex_unlock(&mapAAALock::lockCount);
-}
-
 void UDPParser::lockDnsMap()
 {
 	    pthread_mutex_lock(&mapDnsLock::lockCount);
@@ -262,6 +244,7 @@ uint16_t UDPParser::extractValues(const BYTE packet, uint8_t version, uint16_t *
 
 	t_array[*count]->pLoad = HextoDigits(lchar);
 	offset += 8;
+	lchar[0] = 0;
 
 // ---------------------------------------------------------------------
 	offset += 2;	/* Max Len */
@@ -993,7 +976,7 @@ void UDPParser::pushToFortiGWAgent(string xdr)
 {
 	uint16_t idx = PKT_WRITE_TIME_INDEX(IPGlobal::CURRENT_EPOCH_SEC, IPGlobal::TIME_INDEX);
 
-	if(fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx] == 0)
+	if(fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx + 2] == 0)
 	{
 		fortiGwSM::fortiGwSMStore[fortiSm][this->iId][rId][idx][fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]] = xdr;
 

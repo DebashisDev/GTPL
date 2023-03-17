@@ -30,7 +30,6 @@ class FUtility
 
 			void 		formateIPv6(char *buffer);
 
-			uint32_t	vpsTimeKeys[10000];
 			bool 		someUdpChecks(udpSession *pUdpSession);
 
 			void		swap3(uint64_t *a, uint64_t *b, uint64_t *c);

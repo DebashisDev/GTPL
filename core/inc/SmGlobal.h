@@ -740,13 +740,6 @@ namespace mapDnsLock
 	extern unsigned count;
 }
 
-namespace mapAAALock
-{
-	extern pthread_mutex_t lockCount;
-	extern pthread_cond_t nonzero;
-	extern unsigned count;
-}
-
 class SmGlobal
 {
 	public:

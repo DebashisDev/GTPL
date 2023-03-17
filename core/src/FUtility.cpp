@@ -37,24 +37,6 @@ void FUtility::unLockDnsMap()
     pthread_mutex_unlock(&mapDnsLock::lockCount);
 }
 
-void FUtility::lockAAAMap()
-{
-	    pthread_mutex_lock(&mapAAALock::lockCount);
-	    while (mapAAALock::count == 0)
-	        pthread_cond_wait(&mapAAALock::nonzero, &mapAAALock::lockCount);
-	    mapAAALock::count = mapAAALock::count - 1;
-	    pthread_mutex_unlock(&mapAAALock::lockCount);
-}
-
-void FUtility::unLockAAAMap()
-{
-    pthread_mutex_lock(&mapAAALock::lockCount);
-    if (mapAAALock::count == 0)
-        pthread_cond_signal(&mapAAALock::nonzero);
-    mapAAALock::count = mapAAALock::count + 1;
-    pthread_mutex_unlock(&mapAAALock::lockCount);
-}
-
 void FUtility::buildUdpXdr(udpSession *pUdpSession, char *xdr)
 {
 	xdr[0] = 0;
@@ -289,15 +271,15 @@ uint32_t FUtility::getV4UserId(uint32_t &sourceIP, char* userId)
 	bool ipFound = false;
 
 	/* Get User Name against User IP */
-	lockAAAMap();
-
-	std::map<uint32_t, userInfo>::iterator it = aaaGlbMap::aaaGlbUserIpMap.find(sourceIP);
-	if(it != aaaGlbMap::aaaGlbUserIpMap.end())
-	{
-		userIp 		= it->first;
-		strcpy(userId, it->second.userName);
-	}
-	unLockAAAMap();
+//	lockAAAMap();
+//
+//	std::map<uint32_t, userInfo>::iterator it = aaaGlbMap::aaaGlbUserIpMap.find(sourceIP);
+//	if(it != aaaGlbMap::aaaGlbUserIpMap.end())
+//	{
+//		userIp 		= it->first;
+//		strcpy(userId, it->second.userName);
+//	}
+//	unLockAAAMap();
 
 	return userIp;
 }

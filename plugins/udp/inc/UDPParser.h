@@ -91,9 +91,6 @@ class UDPParser : public DnsData
 		uint64_t 	parsePacketDNS(const BYTE packet, uint16_t dnsLen, dnsHdrIp *info);
 		void		parseMappingPacket(const BYTE packet, headerInfo *hdrObj, uint16_t *locator);
 
-		static void	lockAAAMap();
-		static void	unLockAAAMap();
-
 		static void	lockDnsMap();
 		static void	unLockDnsMap();
 };
