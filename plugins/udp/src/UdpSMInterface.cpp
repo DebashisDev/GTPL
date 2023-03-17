@@ -880,10 +880,15 @@ void UdpSMInterface::udpStoreSession(uint16_t idx, udpSession *pUdpSession)
 {
 //	uint16_t flusherNo = instanceId % IPGlobal::NO_OF_FLUSHER;
 
-	FlusherStore::udpFlStore[flusherNo][instanceId][idx][FlusherStore::udpFlCnt[flusherNo][instanceId][idx]].copy(pUdpSession);
-	FlusherStore::udpFlCnt[flusherNo][instanceId][idx]++;
+	if(FlusherStore::udpFlCnt[flusherNo][instanceId][idx + 2] == 0)
+	{
+		FlusherStore::udpFlStore[flusherNo][instanceId][idx][FlusherStore::udpFlCnt[flusherNo][instanceId][idx]].copy(pUdpSession);
+		FlusherStore::udpFlCnt[flusherNo][instanceId][idx]++;
 
-	flusherNo++;
+		flusherNo++;
+	}
+	else
+		udpEraseSession(pUdpSession);
 
 	if(flusherNo >= IPGlobal::NO_OF_FLUSHER)
 	{	flusherNo = 0; }
