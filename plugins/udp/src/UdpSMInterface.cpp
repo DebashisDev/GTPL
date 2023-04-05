@@ -884,15 +884,11 @@ void UdpSMInterface::udpStoreSession(uint16_t idx, udpSession *pUdpSession)
 	{
 		FlusherStore::udpFlStore[flusherNo][instanceId][idx][FlusherStore::udpFlCnt[flusherNo][instanceId][idx]].copy(pUdpSession);
 		FlusherStore::udpFlCnt[flusherNo][instanceId][idx]++;
-<<<<<<< HEAD
-	}
-=======
->>>>>>> e6bae557aa70c4b837204b5ce330c2a0ce1913b8
-
-		flusherNo++;
 	}
 	else
 		udpEraseSession(pUdpSession);
+
+	flusherNo++;
 
 	if(flusherNo >= IPGlobal::NO_OF_FLUSHER)
 	{	flusherNo = 0; }
