@@ -891,7 +891,7 @@ void UdpSMInterface::udpStoreSession(uint16_t idx, udpSession *pUdpSession)
 	flusherNo++;
 
 	if(flusherNo >= IPGlobal::NO_OF_FLUSHER)
-	{	flusherNo = 0; }
+	{ flusherNo = 0; }
 }
 
 void UdpSMInterface::udpTimeOutClean()

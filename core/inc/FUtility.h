@@ -25,9 +25,6 @@ class FUtility
 			void 		lockDnsMap();
 			void 		unLockDnsMap();
 
-			void 		lockAAAMap();
-			void 		unLockAAAMap();
-
 			void 		formateIPv6(char *buffer);
 
 			bool 		someUdpChecks(udpSession *pUdpSession);
