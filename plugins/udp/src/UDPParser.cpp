@@ -300,7 +300,6 @@ void UDPParser::pushToXdrAgentV4(cFlow** t_array)
 		cFlowSM::cFlowSMStore[cFlowSm][this->iId][rId][idx][cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx]] = t_array;
 
 		cFlowSM::cFlowSMStoreCnt[cFlowSm][this->iId][rId][idx]++ ;
-		cFlowSm++;
 	}
 	else
 	{
@@ -310,6 +309,7 @@ void UDPParser::pushToXdrAgentV4(cFlow** t_array)
 		}
 		free(t_array);
 	}
+	cFlowSm++;
 
 	if(cFlowSm >= IPGlobal::NO_OF_CFLOW_SM)
 		cFlowSm = 0;
@@ -981,10 +981,11 @@ void UDPParser::pushToFortiGWAgent(string xdr)
 		fortiGwSM::fortiGwSMStore[fortiSm][this->iId][rId][idx][fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]] = xdr;
 
 		fortiGwSM::fortiGwSMStoreCnt[fortiSm][this->iId][rId][idx]++ ;
-		fortiSm++;
 	}
 	else
 	{ xdr.clear(); }
+
+	fortiSm++;
 
 	if(fortiSm >= IPGlobal::NO_OF_FORTI_SM)
 		fortiSm = 0;
